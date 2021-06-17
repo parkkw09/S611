@@ -17,6 +17,6 @@ class S611: DaggerApplication() {
     }
 
     companion object {
-        private const val TAG = "S611"
+        private const val TAG = "Application"
     }
 }
