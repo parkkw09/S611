@@ -26,10 +26,10 @@ class NewBookFragment: DaggerFragment() {
     lateinit var viewModel: MainViewModel
 
     private fun subscribeUi(adapter : NewBookAdapter) {
-        viewModel.bookList.observe(viewLifecycleOwner, { bookList ->
+        viewModel.bookList.observe(viewLifecycleOwner) { bookList ->
             Log.d(TAG, "subscribeUi() viewModel.bookList [$bookList]")
             adapter.submitList(bookList)
-        })
+        }
     }
 
     private fun launchUi() {
