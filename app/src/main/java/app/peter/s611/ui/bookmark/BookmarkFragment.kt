@@ -29,10 +29,10 @@ class BookmarkFragment: DaggerFragment() {
     private lateinit var binding: FragmentBookmarkBinding
 
     private fun subscribeUi(adapter : BookmarkAdapter) {
-        viewModel.bookmark.observe(viewLifecycleOwner, { bookList ->
+        viewModel.bookmark.observe(viewLifecycleOwner) { bookList ->
             Log.d(TAG, "subscribeUi() viewModel.bookmark [$bookList]")
             adapter.addAllData(bookList)
-        })
+        }
     }
 
     private fun launchUi() {

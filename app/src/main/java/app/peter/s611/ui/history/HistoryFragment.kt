@@ -23,10 +23,10 @@ class HistoryFragment: DaggerFragment() {
     lateinit var viewModel: MainViewModel
 
     private fun subscribeUi(adapter : HistoryAdapter) {
-        viewModel.history.observe(viewLifecycleOwner, { historyList ->
+        viewModel.history.observe(viewLifecycleOwner) { historyList ->
             Log.d(TAG, "subscribeUi() viewModel.history [$historyList]")
             adapter.submitList(historyList)
-        })
+        }
     }
 
     private fun launchUi() {

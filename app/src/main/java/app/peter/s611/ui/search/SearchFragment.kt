@@ -39,21 +39,21 @@ class SearchFragment: DaggerFragment() {
 
     private fun subscribeUi(adapter: SearchAdapter) {
         Log.d(TAG, "subscribeUi()")
-        viewModel.searchBookList.observe(viewLifecycleOwner, { bookList ->
+        viewModel.searchBookList.observe(viewLifecycleOwner) { bookList ->
             Log.d(TAG, "subscribeUi() viewModel.searchBookList [$bookList]")
             when (currentPage == 1) {
                 true -> adapter.addAllData(bookList)
                 false -> adapter.addAllMore(bookList)
             }
-        })
-        viewModel.currentSearchQuery.observe(viewLifecycleOwner, { query ->
+        }
+        viewModel.currentSearchQuery.observe(viewLifecycleOwner) { query ->
             Log.d(TAG, "subscribeUi() viewModel.currentSearchQuery [$query]")
             if (query.isEmpty()) {
                 processClearResult()
             } else {
                 processSearch(query)
             }
-        })
+        }
     }
 
     private fun processSearch(query: String) {
