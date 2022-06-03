@@ -1,5 +1,6 @@
 package app.peter.s611.ui
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,10 @@ import app.peter.s611.domain.usecase.DetailBookUseCase
 import app.peter.s611.domain.usecase.NewBookUseCase
 import app.peter.s611.domain.usecase.SearchBookUseCase
 import app.peter.s611.util.Log
+import com.google.android.gms.appset.AppSet
+import com.google.android.gms.appset.AppSetIdClient
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -43,6 +48,14 @@ class MainViewModel @Inject constructor (
     private var _currentSearchQuery: MutableLiveData<String> = MutableLiveData()
     val currentSearchQuery: LiveData<String>
         get() = _currentSearchQuery
+
+    var reviewManager: ReviewManager? = null
+    var client: AppSetIdClient? = null
+
+    fun initClient(context: Context) {
+        client = AppSet.getClient(context)
+        reviewManager = ReviewManagerFactory.create(context)
+    }
 
     fun getNewBook() {
         newBookUseCase.getNewBook()
