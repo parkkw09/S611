@@ -143,6 +143,7 @@ class ViewPagerFragment: DaggerFragment() {
 
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
+            viewModel.appName?.let { appName.text = it }
             appName.setOnClickListener { testAppSetID() }
             review.setOnClickListener { testReviewManager() }
             search.setOnClickListener {

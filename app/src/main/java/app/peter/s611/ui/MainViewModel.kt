@@ -11,6 +11,7 @@ import app.peter.s611.domain.usecase.DetailBookUseCase
 import app.peter.s611.domain.usecase.NewBookUseCase
 import app.peter.s611.domain.usecase.SearchBookUseCase
 import app.peter.s611.util.Log
+import app.peter.s611.util.Utils
 import com.google.android.gms.appset.AppSet
 import com.google.android.gms.appset.AppSetIdClient
 import com.google.android.play.core.review.ReviewManager
@@ -49,12 +50,14 @@ class MainViewModel @Inject constructor (
     val currentSearchQuery: LiveData<String>
         get() = _currentSearchQuery
 
+    var appName: String? = null
     var reviewManager: ReviewManager? = null
     var client: AppSetIdClient? = null
 
-    fun initClient(context: Context) {
+    fun initClient(context: Context, appName: String) {
         client = AppSet.getClient(context)
         reviewManager = ReviewManagerFactory.create(context)
+        this.appName = Utils.convertAppName(context, appName)
     }
 
     fun getNewBook() {

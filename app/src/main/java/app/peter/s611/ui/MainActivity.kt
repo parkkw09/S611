@@ -2,6 +2,7 @@ package app.peter.s611.ui
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import app.peter.s611.R
 import app.peter.s611.databinding.ActivityMainBinding
 import app.peter.s611.di.module.view.ViewModelFactory
 import app.peter.s611.util.Log
@@ -17,7 +18,7 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var viewModel: MainViewModel
 
     private fun initializeApplication() {
-        viewModel.initClient(applicationContext)
+        viewModel.initClient(applicationContext, resources.getString(R.string.app_name))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
