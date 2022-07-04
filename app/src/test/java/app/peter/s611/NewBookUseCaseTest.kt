@@ -1,10 +1,10 @@
 package app.peter.s611
 
-import app.peter.s611.domain.local.S611Data
-import app.peter.s611.domain.model.Book
-import app.peter.s611.domain.model.ListBook
-import app.peter.s611.domain.remote.Api
-import app.peter.s611.domain.repository.LibraryRepository
+import app.peter.s611.data.repository.source.local.S611Data
+import app.peter.s611.data.entities.Book
+import app.peter.s611.data.entities.ListBook
+import app.peter.s611.data.repository.source.remote.Api
+import app.peter.s611.data.repository.LibraryRepository
 import app.peter.s611.domain.usecase.NewBookUseCase
 import com.google.gson.Gson
 import io.reactivex.rxjava3.disposables.CompositeDisposable

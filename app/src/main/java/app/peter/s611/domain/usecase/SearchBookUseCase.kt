@@ -1,7 +1,7 @@
 package app.peter.s611.domain.usecase
 
-import app.peter.s611.domain.model.ListBook
-import app.peter.s611.domain.repository.LibraryRepository
+import app.peter.s611.data.entities.ListBook
+import app.peter.s611.data.repository.LibraryRepository
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 

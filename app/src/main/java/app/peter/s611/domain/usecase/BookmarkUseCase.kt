@@ -1,8 +1,8 @@
 package app.peter.s611.domain.usecase
 
-import app.peter.s611.domain.model.Book
+import app.peter.s611.data.entities.Book
 import app.peter.s611.domain.model.DetailBook
-import app.peter.s611.domain.repository.LibraryRepository
+import app.peter.s611.data.repository.LibraryRepository
 import javax.inject.Inject
 
 class BookmarkUseCase @Inject constructor(
@@ -10,30 +10,36 @@ class BookmarkUseCase @Inject constructor(
 ) {
 
     fun addBookmark(detailBook: DetailBook) {
-        repository.addBookmark(Book(detailBook.isbn13,
+        repository.addBookmark(
+            Book(detailBook.isbn13,
             detailBook.title,
             detailBook.subtitle,
             detailBook.price,
             detailBook.image,
-            detailBook.url))
+            detailBook.url)
+        )
     }
 
     fun deleteBookmark(detailBook: DetailBook) {
-        repository.deleteBookmark(Book(detailBook.isbn13,
+        repository.deleteBookmark(
+            Book(detailBook.isbn13,
             detailBook.title,
             detailBook.subtitle,
             detailBook.price,
             detailBook.image,
-            detailBook.url))
+            detailBook.url)
+        )
     }
 
     fun checkBookmark(detailBook: DetailBook): Boolean {
-        return repository.checkBookmark(Book(detailBook.isbn13,
+        return repository.checkBookmark(
+            Book(detailBook.isbn13,
             detailBook.title,
             detailBook.subtitle,
             detailBook.price,
             detailBook.image,
-            detailBook.url))
+            detailBook.url)
+        )
     }
 
     fun updateBookmark(bookmark: List<Book>) = repository.updateBookmark(bookmark)
