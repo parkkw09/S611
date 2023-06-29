@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.peter.s611.data.entities.Book
-import app.peter.s611.domain.model.DetailBook
+import app.peter.s611.data.entities.DetailBook
 import app.peter.s611.domain.usecase.BookmarkUseCase
 import app.peter.s611.domain.usecase.DetailBookUseCase
 import app.peter.s611.domain.usecase.NewBookUseCase

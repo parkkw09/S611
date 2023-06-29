@@ -2,8 +2,8 @@ package app.peter.s611
 
 import app.peter.s611.data.repository.source.local.S611Data
 import app.peter.s611.data.entities.Book
-import app.peter.s611.domain.model.DetailBook
-import app.peter.s611.domain.model.Pdf
+import app.peter.s611.data.entities.DetailBook
+import app.peter.s611.data.entities.Pdf
 import app.peter.s611.data.repository.source.remote.Api
 import app.peter.s611.data.repository.LibraryRepository
 import app.peter.s611.domain.usecase.BookmarkUseCase

@@ -1,7 +1,7 @@
 package app.peter.s611.domain.usecase
 
 import app.peter.s611.data.entities.Book
-import app.peter.s611.domain.model.DetailBook
+import app.peter.s611.data.entities.DetailBook
 import app.peter.s611.data.repository.LibraryRepository
 import javax.inject.Inject
 

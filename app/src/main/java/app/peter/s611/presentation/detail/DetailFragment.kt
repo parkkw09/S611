@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import app.peter.s611.R
 import app.peter.s611.databinding.FragmentDetailBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.domain.model.DetailBook
+import app.peter.s611.data.entities.DetailBook
 import app.peter.s611.presentation.MainViewModel
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager

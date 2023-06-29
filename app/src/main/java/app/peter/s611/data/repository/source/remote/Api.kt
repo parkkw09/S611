@@ -1,7 +1,7 @@
 package app.peter.s611.data.repository.source.remote
 
 import app.peter.s611.application.DomainConst
-import app.peter.s611.domain.model.DetailBook
+import app.peter.s611.data.entities.DetailBook
 import app.peter.s611.data.entities.ListBook
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET

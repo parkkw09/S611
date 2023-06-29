@@ -1,4 +1,4 @@
-package app.peter.s611.domain.model
+package app.peter.s611.data.entities
 
 import com.google.gson.annotations.SerializedName
 
