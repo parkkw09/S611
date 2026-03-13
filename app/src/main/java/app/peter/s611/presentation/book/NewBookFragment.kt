@@ -34,7 +34,7 @@ class NewBookFragment: DaggerFragment() {
 
     private fun launchUi() {
         Log.d(TAG, "launchUi()")
-        viewModel.getNewBook()
+        viewModel.getNewBook(isRefresh = true)
     }
 
     private fun navigateToDetail(view: View, isbn: String) {
@@ -57,6 +57,22 @@ class NewBookFragment: DaggerFragment() {
         binding.bookList.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
+            
+            addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                    if (!viewModel.isNewBookLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            viewModel.getNewBook()
+                        }
+                    }
+                }
+            })
         }
         subscribeUi(adapter)
         return binding.root

@@ -9,8 +9,8 @@ class NewBookUseCase @Inject constructor(
     private val repository: LibraryRepository
 ) {
 
-    fun getNewBook(): Single<List<Book>> {
-        return repository.getNewBook().map {
+    fun getNewBook(page: String = "1"): Single<List<Book>> {
+        return repository.getNewBook(page).map {
             it.books
         }
     }

@@ -34,6 +34,10 @@ class MainViewModel @Inject constructor (
     val bookList: LiveData<List<Book>>
         get() = _bookList
 
+    private var newBookPage = 1
+    private var isNewBookLoading = false
+    var isNewBookLastPage = false
+
     private var _bookmark: MutableLiveData<List<Book>> = MutableLiveData()
     val bookmark: LiveData<List<Book>>
         get() = _bookmark
@@ -60,12 +64,28 @@ class MainViewModel @Inject constructor (
         this.appName = Utils.convertAppName(context, appName)
     }
 
-    fun getNewBook() {
-        newBookUseCase.getNewBook()
+    fun getNewBook(isRefresh: Boolean = false) {
+        if (isNewBookLoading) return
+        if (isRefresh) {
+            newBookPage = 1
+            isNewBookLastPage = false
+        }
+        if (isNewBookLastPage) return
+
+        isNewBookLoading = true
+
+        newBookUseCase.getNewBook(newBookPage.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { isNewBookLoading = false }
             .subscribe({ list ->
-                _bookList.value = list
+                if (list.isEmpty()) {
+                    isNewBookLastPage = true
+                } else {
+                    val currentList = if (isRefresh) emptyList() else _bookList.value ?: emptyList()
+                    _bookList.value = currentList + list
+                    newBookPage++
+                }
             }, { e ->
                 Log.e(TAG, "getNewBook exception [${e.localizedMessage}]")
             }).apply {

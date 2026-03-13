@@ -3,6 +3,7 @@ package app.peter.s611.data.repository
 import app.peter.s611.data.repository.source.local.S611Data
 import app.peter.s611.data.entities.Book
 import app.peter.s611.data.repository.source.remote.Api
+import app.peter.s611.data.repository.source.remote.OLResponseMapper
 import javax.inject.Inject
 
 class LibraryRepository @Inject constructor (
@@ -10,9 +11,9 @@ class LibraryRepository @Inject constructor (
     private val data: S611Data
 ) {
 
-    fun getNewBook() = api.getNewBooks()
-    fun getDetailBook(isbn: String) = api.getBookDetail(isbn)
-    fun getSearchBook(query: String, page: String) = api.getSearchBook(query, page)
+    fun getNewBook(page: String = "1") = api.getNewBooks(page = page.toIntOrNull() ?: 1).map { OLResponseMapper.toListBook(it, page) }
+    fun getDetailBook(isbn: String) = api.getBookDetail(isbn).map { OLResponseMapper.toDetailBook(it, isbn) }
+    fun getSearchBook(query: String, page: String) = api.getSearchBook(query, page.toIntOrNull() ?: 1).map { OLResponseMapper.toListBook(it, page) }
 
     fun addBookmark(book: Book) {
         if (data.bookmark.contains(book)) return
