@@ -1,16 +1,15 @@
 package app.peter.s611.data.repository.source.remote
 
 import app.peter.s611.application.DomainConst
-import app.peter.s611.data.entities.Book
-import app.peter.s611.data.entities.DetailBook
-import app.peter.s611.data.entities.ListBook
+import app.peter.s611.domain.model.Book
+import app.peter.s611.domain.model.DetailBook
+import app.peter.s611.domain.model.ListBook
 import app.peter.s611.data.entities.OLEditionResponse
 import app.peter.s611.data.entities.OLSearchDoc
 import app.peter.s611.data.entities.OLSearchResponse
-import app.peter.s611.data.entities.Pdf
 
 /**
- * Open Library API 응답을 기존 내부 모델(ListBook, DetailBook, Book)로 변환하는 매퍼.
+ * Open Library API 응답을 Domain 모델(ListBook, DetailBook, Book)로 변환하는 매퍼.
  */
 object OLResponseMapper {
 
@@ -76,7 +75,7 @@ object OLResponseMapper {
             price = "",
             image = coverUrl,
             url = bookUrl,
-            pdf = Pdf("")
+            pdfFreeBook = ""
         )
     }
 

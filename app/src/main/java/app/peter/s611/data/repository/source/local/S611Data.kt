@@ -1,6 +1,6 @@
 package app.peter.s611.data.repository.source.local
 
-import app.peter.s611.data.entities.Book
+import app.peter.s611.domain.model.Book
 import javax.inject.Inject
 
 class S611Data @Inject constructor() {

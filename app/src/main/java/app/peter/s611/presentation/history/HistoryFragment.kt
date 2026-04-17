@@ -9,7 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.peter.s611.databinding.FragmentHistoryBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.presentation.MainViewModel
+
 import app.peter.s611.presentation.main.ViewPagerFragmentDirections
 import app.peter.s611.application.Log
 import dagger.android.support.DaggerFragment
@@ -20,7 +20,7 @@ class HistoryFragment: DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: HistoryViewModel
 
     private fun subscribeUi(adapter : HistoryAdapter) {
         viewModel.history.observe(viewLifecycleOwner) { historyList ->
@@ -45,7 +45,7 @@ class HistoryFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[HistoryViewModel::class.java]
         val binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val adapter = HistoryAdapter() {
             Log.d(TAG, "onCreateView() item click [${it}]")

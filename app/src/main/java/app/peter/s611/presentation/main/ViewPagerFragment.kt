@@ -124,11 +124,7 @@ class ViewPagerFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        activity?.run {
-            viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        } ?: run {
-            viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        }
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
         _binding = FragmentViewPagerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -152,10 +148,14 @@ class ViewPagerFragment: DaggerFragment() {
             review.setOnClickListener { testReviewManager() }
             search.setOnClickListener {
                 val direction = ViewPagerFragmentDirections.actionViewPagerFragmentToSearchFragment("")
-                viewModel.setCurrentSearchQuery("")
                 it.findNavController().navigate(direction)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

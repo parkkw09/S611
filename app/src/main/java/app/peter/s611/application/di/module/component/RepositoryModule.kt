@@ -1,16 +1,15 @@
 package app.peter.s611.application.di.module.component
 
-import app.peter.s611.data.repository.source.local.S611Data
-import app.peter.s611.data.repository.source.remote.Api
-import app.peter.s611.data.repository.LibraryRepository
+import app.peter.s611.data.repository.LibraryRepositoryImpl
+import app.peter.s611.domain.repository.LibraryRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class RepositoryModule {
+abstract class RepositoryModule {
 
     @Singleton
-    @Provides
-    fun provideLibraryRepository(api: Api, data: S611Data): LibraryRepository = LibraryRepository(api, data)
+    @Binds
+    abstract fun bindLibraryRepository(impl: LibraryRepositoryImpl): LibraryRepository
 }

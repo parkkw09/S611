@@ -10,8 +10,7 @@ import androidx.navigation.fragment.navArgs
 import app.peter.s611.R
 import app.peter.s611.databinding.FragmentDetailBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.data.entities.DetailBook
-import app.peter.s611.presentation.MainViewModel
+import app.peter.s611.domain.model.DetailBook
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -26,10 +25,11 @@ class DetailFragment: DaggerFragment() {
     @Inject
     lateinit var requestManager: RequestManager
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: DetailViewModel
     private val args: DetailFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentDetailBinding
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
 
     private fun launchUi(isbn: String) {
         Log.d(TAG, "launchUi()")
@@ -45,7 +45,7 @@ class DetailFragment: DaggerFragment() {
                 this.bookInfo.text = info
                 this.bookDescription.text = information.desc
                 this.bookUrl.text = information.url
-                this.bookPdfLink.text = information.pdf.freeBook
+                this.bookPdfLink.text = information.pdfFreeBook
                 this.detailImage.let {
                     it.scaleType = ImageView.ScaleType.FIT_CENTER
                     requestManager.load(information.image)
@@ -77,8 +77,8 @@ class DetailFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DetailViewModel::class.java]
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -86,6 +86,11 @@ class DetailFragment: DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated()")
         launchUi(args.isbn)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

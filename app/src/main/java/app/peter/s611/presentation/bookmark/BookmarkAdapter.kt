@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import app.peter.s611.R
 import app.peter.s611.databinding.ItemBookBinding
-import app.peter.s611.data.entities.Book
+import app.peter.s611.domain.model.Book
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions

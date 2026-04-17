@@ -1,42 +1,8 @@
+@file:Suppress("unused")
 package app.peter.s611.data.repository
 
-import app.peter.s611.data.repository.source.local.S611Data
-import app.peter.s611.data.entities.Book
-import app.peter.s611.data.repository.source.remote.Api
-import app.peter.s611.data.repository.source.remote.OLResponseMapper
-import javax.inject.Inject
-
-class LibraryRepository @Inject constructor (
-    private val api: Api,
-    private val data: S611Data
-) {
-
-    fun getNewBook(page: String = "1") = api.getNewBooks(page = page.toIntOrNull() ?: 1).map { OLResponseMapper.toListBook(it, page) }
-    fun getDetailBook(isbn: String) = api.getBookDetail(isbn).map { OLResponseMapper.toDetailBook(it, isbn) }
-    fun getSearchBook(query: String, page: String) = api.getSearchBook(query, page.toIntOrNull() ?: 1).map { OLResponseMapper.toListBook(it, page) }
-
-    fun addBookmark(book: Book) {
-        if (data.bookmark.contains(book)) return
-        data.bookmark.add(book)
-    }
-
-    fun deleteBookmark(book: Book) {
-        data.bookmark.remove(book)
-    }
-
-    fun checkBookmark(book: Book): Boolean = data.bookmark.contains(book)
-
-    fun updateBookmark(bookmark: List<Book>) {
-        data.bookmark.clear()
-        data.bookmark.addAll(bookmark)
-    }
-
-    fun getBookmark() = data.bookmark
-
-    fun addHistory(query: String) {
-        if (data.history.contains(query)) return
-        data.history.add(query)
-    }
-
-    fun getHistory() = data.history
-}
+/**
+ * @deprecated LibraryRepositoryImpl로 대체됨.
+ * domain.repository.LibraryRepository 인터페이스를 사용하세요.
+ * 이 파일은 향후 삭제 대상입니다.
+ */

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.peter.s611.databinding.FragmentBookmarkBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.presentation.MainViewModel
+
 import app.peter.s611.presentation.main.ViewPagerFragmentDirections
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager
@@ -24,9 +24,10 @@ class BookmarkFragment: DaggerFragment() {
     @Inject
     lateinit var requestManager: RequestManager
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: BookmarkViewModel
 
-    private lateinit var binding: FragmentBookmarkBinding
+    private var _binding: FragmentBookmarkBinding? = null
+    private val binding get() = _binding!!
 
     private fun subscribeUi(adapter : BookmarkAdapter) {
         viewModel.bookmark.observe(viewLifecycleOwner) { bookList ->
@@ -51,8 +52,8 @@ class BookmarkFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[BookmarkViewModel::class.java]
+        _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         val adapter = BookmarkAdapter(requestManager) {
             Log.d(TAG, "onCreateView() item click [${it.isbn}]")
             navigateToDetail(binding.root, it.isbn)
@@ -80,6 +81,7 @@ class BookmarkFragment: DaggerFragment() {
         Log.d(TAG, "onDestroyView()")
         val adapter = binding.bookmarkList.adapter as BookmarkAdapter
         viewModel.updateBookmark(adapter.getList())
+        _binding = null
         super.onDestroyView()
     }
 

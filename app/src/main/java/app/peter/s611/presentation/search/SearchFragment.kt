@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.peter.s611.databinding.FragmentSearchBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.presentation.MainViewModel
+
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager
 import dagger.android.support.DaggerFragment
@@ -27,55 +27,18 @@ class SearchFragment: DaggerFragment() {
     @Inject
     lateinit var requestManager: RequestManager
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: SearchViewModel
     private val args: SearchFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentSearchBinding
-
-    private var pageCount = 1
-    private var currentPage = 1
-    private var loading = false
-    private var complete = false
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private fun subscribeUi(adapter: SearchAdapter) {
         Log.d(TAG, "subscribeUi()")
         viewModel.searchBookList.observe(viewLifecycleOwner) { bookList ->
             Log.d(TAG, "subscribeUi() viewModel.searchBookList [$bookList]")
-            when (currentPage == 1) {
-                true -> adapter.addAllData(bookList)
-                false -> adapter.addAllMore(bookList)
-            }
+            adapter.addAllData(bookList)
         }
-        viewModel.currentSearchQuery.observe(viewLifecycleOwner) { query ->
-            Log.d(TAG, "subscribeUi() viewModel.currentSearchQuery [$query]")
-            if (query.isEmpty()) {
-                processClearResult()
-            } else {
-                processSearch(query)
-            }
-        }
-    }
-
-    private fun processSearch(query: String) {
-        Log.d(TAG, "processSearch()")
-        val adapter = binding.searchList.adapter as SearchAdapter
-        viewModel.searchBook(query, pageCount.toString()) { page, total ->
-            Log.d(TAG, "processSearch() current page[$page] totalCount[$total]")
-            currentPage = page
-            if (adapter.size() >= total && pageCount != 1) {
-                loading = false
-                complete = true
-            } else {
-                loading = false
-                pageCount++
-            }
-        }
-    }
-
-    private fun processClearResult() {
-        val adapter = binding.searchList.adapter as SearchAdapter
-        adapter.clearData()
-        viewModel.clearSearchResult()
     }
 
     private fun navigateToDetail(view: View, isbn: String) {
@@ -96,10 +59,9 @@ class SearchFragment: DaggerFragment() {
                 recyclerView.adapter?.let { adapter ->
                     val remainCount = adapter.itemCount - position
                     if (remainCount < AUTO_LOAD_THRESHOLD) {
-                        if (!loading && !complete) {
-                            loading = true
-                            viewModel.currentSearchQuery.value?.let { query ->
-                                processSearch(query)
+                        viewModel.currentSearchQuery.value?.let { query ->
+                            if (query.isNotEmpty()) {
+                                viewModel.searchBook(query)
                             }
                         }
                     }
@@ -114,8 +76,11 @@ class SearchFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[SearchViewModel::class.java]
+        viewModel.resetSearchState()
+        viewModel.clearSearchResult()
+
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val adapter = SearchAdapter(requestManager) {
             Log.d(TAG, "onCreateView() item click [${it.isbn}]")
             navigateToDetail(binding.root, it.isbn)
@@ -129,13 +94,11 @@ class SearchFragment: DaggerFragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 hideSoftKeyboard()
                 query?.let {
-                    currentPage = 1
-                    pageCount = 1
-                    loading = false
-                    complete = false
-
+                    viewModel.resetSearchState()
+                    viewModel.clearSearchResult()
                     viewModel.setCurrentSearchQuery(query)
                     viewModel.addHistory(it)
+                    viewModel.searchBook(query)
                 }
                 return true
             }
@@ -152,11 +115,6 @@ class SearchFragment: DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val searchQuery = args.query
         Log.d(TAG, "onViewCreated() searchQuery[$searchQuery]")
-        currentPage = 1
-        pageCount = 1
-        loading = false
-        complete = false
-
         if (searchQuery.isNotEmpty()) {
             binding.search.apply {
                 setQuery(searchQuery, true)
@@ -167,9 +125,7 @@ class SearchFragment: DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "onDestroyView()")
-        pageCount = 1
-        loading = false
-        complete = false
+        _binding = null
     }
 
     companion object {

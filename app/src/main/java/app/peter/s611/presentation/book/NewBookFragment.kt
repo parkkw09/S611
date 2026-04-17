@@ -9,7 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.peter.s611.databinding.FragmentNewBookBinding
 import app.peter.s611.application.di.module.view.ViewModelFactory
-import app.peter.s611.presentation.MainViewModel
+
 import app.peter.s611.presentation.main.ViewPagerFragmentDirections
 import app.peter.s611.application.Log
 import com.bumptech.glide.RequestManager
@@ -23,7 +23,7 @@ class NewBookFragment: DaggerFragment() {
     @Inject
     lateinit var requestManager: RequestManager
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: NewBookViewModel
 
     private fun subscribeUi(adapter : NewBookAdapter) {
         viewModel.bookList.observe(viewLifecycleOwner) { bookList ->
@@ -48,7 +48,7 @@ class NewBookFragment: DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "onCreateView()")
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[NewBookViewModel::class.java]
         val binding = FragmentNewBookBinding.inflate(inflater, container, false)
         val adapter = NewBookAdapter(requestManager) {
             Log.d(TAG, "onCreateView() item click [${it.isbn}]")
